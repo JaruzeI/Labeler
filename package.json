@@ -1,0 +1,33 @@
+{
+  "name": "etykiety",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.17.2",
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "mongoose": "^4.11.9"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express-fileupload": "^0.2.0",
+    "express-session": "^1.15.6",
+    "file-type": "^7.3.0",
+    "html-pdf": "^2.2.0",
+    "html-to-pdf": "^0.1.11",
+    "jQuery": "^1.7.4",
+    "jquery": "^3.2.1",
+    "request": "^2.81.0",
+    "xml2js": "^0.4.19",
+    "xmlreader": "^0.2.3"
+  }
+}

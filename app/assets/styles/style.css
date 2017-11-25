@@ -1,0 +1,16 @@
+body {
+  padding: 10px;
+}
+
+.dropdown-form {
+  padding: 14px;
+  min-width: 200px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group.form-group--bottom {
+  margin-bottom: 0;
+}
