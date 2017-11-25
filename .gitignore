@@ -27,3 +27,7 @@ nbproject
 .komodotools
 _notes
 dwsync.xml
+
+# Additional ignores
+uploaded_files
+user_files

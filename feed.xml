@@ -1,0 +1,104 @@
+<rss version="2.0" 
+  xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>Testowe dane</title>
+    <link>http://www.example.com</link>
+    <description>Plik zawiera przykładowe dane</description>
+    <item>
+      <title>ZELMER</title>
+      <google_product_category>WAGA1111</google_product_category>
+      <link> http://www.example.com/produkt1-informacje.html</link>
+      <description>Wyświetlacz LCD; Ilość kalorii, zawartość soli, zawartość
+  cholesterolu, zawartość protein, zawartość tłuszczów,
+  zawartość błonnika, zawartość węglowodanów, alarm;
+  Dokładność: 1g; Zasilanie: AAA</description>
+      <image_link>http://www.example.com/image1.jpg</image_link>
+      <price>123.45</price>
+      <condition>nowy</condition>
+      <bestseller>true</bestseller>
+      <gtin>7311270039724/15</gtin>
+      <additional>Fujifilm | Aparat cyfrowy | Model: S2950HD | 201/22322322$0406</additional>
+      <id>1a </id>
+    </item>
+    <item>
+      <title>ZELMERX</title>
+      <google_product_category>WAGA22222222</google_product_category>
+      <link> http://www.example.com/produkt1-informacje.html</link>
+      <description>Wyświetlacz LCD; Ilość kalorii, zawartość soli, zawartość
+  cholesterolu, zawartość protein, zawartość tłuszczów,
+  zawartość błonnika, zawartość węglowodanów, alarm;
+  Dokładność: 1g; Zasilanie: AAA</description>
+      <image_link>http://www.example.com/image1.jpg</image_link>
+      <price>123.45</price>
+      <condition>nowy</condition>
+      <bestseller>true</bestseller>
+      <gtin>7311270039724/16</gtin>
+      <additional>Fujifilm | Aparat cyfrowy | Model: S2950HD | 201/22322322$0406</additional>
+      <id>1a </id>
+    </item>
+        <item>
+      <title>ZELMER</title>
+      <google_product_category>WAGA</google_product_category>
+      <link> http://www.example.com/produkt1-informacje.html</link>
+      <description>Wyświetlacz LCD; Ilość kalorii, zawartość soli, zawartość
+  cholesterolu, zawartość protein, zawartość tłuszczów,
+  zawartość błonnika, zawartość węglowodanów, alarm;
+  Dokładność: 1g; Zasilanie: AAA</description>
+      <image_link>http://www.example.com/image1.jpg</image_link>
+      <price>234.56</price>
+      <condition>nowy</condition>
+      <bestseller>true</bestseller>
+      <gtin>7311270039724/15</gtin>
+      <additional>Fujifilm | Aparat cyfrowy | Model: S2950HD | 201/22322322$0406</additional>
+      <id>1a </id>
+    </item>
+    <item>
+      <title>ZELMERX</title>
+      <google_product_category>WAGA</google_product_category>
+      <link> http://www.example.com/produkt1-informacje.html</link>
+      <description>Wyświetlacz LCD; Ilość kalorii, zawartość soli, zawartość
+  cholesterolu, zawartość protein, zawartość tłuszczów,
+  zawartość błonnika, zawartość węglowodanów, alarm;
+  Dokładność: 1g; Zasilanie: AAA</description>
+      <image_link>http://www.example.com/image1.jpg</image_link>
+      <price>345.67</price>
+      <condition>nowy</condition>
+      <bestseller>true</bestseller>
+      <gtin>7311270039724/16</gtin>
+      <additional>Fujifilm | Aparat cyfrowy | Model: S2950HD | 201/22322322$0406</additional>
+      <id>1a </id>
+    </item>
+        <item>
+      <title>ZELMER</title>
+      <google_product_category>WAGAXXXXX</google_product_category>
+      <link> http://www.example.com/produkt1-informacje.html</link>
+      <description>Wyświetlacz LCD; Ilość kalorii, zawartość soli, zawartość
+  cholesterolu, zawartość protein, zawartość tłuszczów,
+  zawartość błonnika, zawartość węglowodanów, alarm;
+  Dokładność: 1g; Zasilanie: AAA</description>
+      <image_link>http://www.example.com/image1.jpg</image_link>
+      <price>4561.78</price>
+      <condition>nowy</condition>
+      <bestseller>true</bestseller>
+      <gtin>7311270039724/15</gtin>
+      <additional>Fujifilm | Aparat cyfrowy | Model: S2950HD | 201/22322322$0406</additional>
+      <id>1a </id>
+    </item>
+    <item>
+      <title>ZELMERX</title>
+      <google_product_category>WAGA</google_product_category>
+      <link> http://www.example.com/produkt1-informacje.html</link>
+      <description>Wyświetlacz LCD; Ilość kalorii, zawartość soli, zawartość
+  cholesterolu, zawartość protein, zawartość tłuszczów,
+  zawartość błonnika, zawartość węglowodanów, alarm;
+  Dokładność: 1g; Zasilanie: AAA</description>
+      <image_link>http://www.example.com/image1.jpg</image_link>
+      <price>567.89</price>
+      <condition>nowy</condition>
+      <bestseller>true</bestseller>
+      <gtin>7311270039724/16</gtin>
+      <additional>Fujifilm | Aparat cyfrowy | Model: S2950HD | 201/22322322$0406</additional>
+      <id>1a </id>
+    </item>
+  </channel>
+</rss>
