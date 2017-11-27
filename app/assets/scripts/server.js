@@ -12,6 +12,50 @@ var ejs = require('ejs');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket){ 
+  io.on('disconnect', function(){
+    saveDir = (path.resolve(__dirname + '/../../../uploaded_files'));
+    socket.emit('disconnected');
+  })
+
+  socket.on('logout', function(){
+    saveDir = (path.resolve(__dirname + '/../../../uploaded_files'));
+    socket.emit('disconnected');
+  });
+
+  socket.on('login submit', function(username, password){
+    User.findOne({username: username}, function(err, user) {
+      if(err) {
+        console.log(err);
+        socket.emit('login response', "Sorry, error occured.");
+        return false;
+      }
+  
+      if(!user) {
+        socket.emit('login response', "Wrong username");
+        return false;
+      }
+  
+      // test a matching password
+      user.comparePassword(password, function(err, isMatch) {
+        if (isMatch == true) {
+          //req.session.user = user;
+          saveDir = path.resolve(__dirname + '/../../../user_files/' + user._id);
+          socket.emit('login response', "success");
+          return false;
+        } else {
+          socket.emit('login response', "Wrong password");
+          return false;
+        }
+      });      
+    });
+  });
+  
+});
 
 var User = require('./lib/User.js');
 
@@ -24,7 +68,6 @@ mongoose.connect('mongodb://mongodb://localhost/mean-app')
 var options = { "height": "634px", "width": "448px" };
 var saveDir = (path.resolve(__dirname + '/../../../uploaded_files'));
 
-const app = express();
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(session({secret:"uifh783fh38fbwedicw9c23bh493h"/*PLACEHOLDER SECRET!! Have to change this later.*/,resave:false,saveUninitialized:true}));
@@ -70,7 +113,7 @@ function createPDF() {
 //#endregion END OF Declaring functions
  
 app.get('/', function (req, res) {
-  res.sendFile(path.resolve(__dirname + '/../../index.html'));
+  res.sendFile(path.resolve(__dirname + '/../../../index.html'));
 });
 
 app.post('/upload', function(req, res) {
@@ -303,6 +346,7 @@ app.post('/register', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
+  /*
   var username = req.body.username;
   var password = req.body.password;
 
@@ -326,7 +370,7 @@ app.post('/login', function(req, res) {
         return res.status(401).send();
       }
     });
-  });
+  });*/
 });
 
 app.get('/logout', function(req, res) {
@@ -343,6 +387,8 @@ app.get('/dashboard', function(req, res) {
   return res.status(200).send("Welcome!");
 });
 
-app.listen(3000, function () {
+/*app.listen(3000, function () {
 	console.log('Serwer nasłuchuje na porcie numer', 3000);
-});
+});*/
+
+server.listen(3000);

@@ -7,7 +7,41 @@
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" type="text/css" href="styles/style.css">
+  <script>
+    $(function () {
+      var socket = io();
+
+      // Login section
+      $('#loginForm').submit(function(){
+        socket.emit('login submit', $('#loginForm input[name=username]').val(), $('#loginForm input[name=password]').val());
+        return false;
+      });
+
+      socket.on('login response', function(req){
+        if (req != "success"){
+          $('#test').text(req);
+        } else {
+          $('.login-button').hide();
+          $('.logout-button').css('display', 'block');
+        }
+      });
+      // END Login section
+
+      // Logout section
+      $('.logout-button').click(function(){
+        socket.emit('logout');
+      });
+
+      socket.on('disconnected', function(){
+        $('.login-button').css('display', 'block');
+        $('.logout-button').hide();
+      });
+      // END Logout section
+    });
+  </script>
   <title>Document</title>
 </head>
 <body>
@@ -21,7 +55,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         <!-- Login dropdown form -->
-        <li class="dropdown">
+        <li class="dropdown login-button">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Zaloguj się!
           <span class="caret"></span></a>
           <ul class="dropdown-menu dropdown-form">
@@ -48,6 +82,10 @@
               </form>
             </li>
           </ul>
+        </li>
+
+        <li>
+          <a class="logout-button">Wyloguj</a>
         </li>
         <!-- Registration dropdown form -->
         <li class="dropdown">
@@ -106,5 +144,6 @@
 
     </div>
   </nav>
+  <div id="test"></div>
 </body>
 </html>

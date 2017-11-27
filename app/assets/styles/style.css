@@ -14,3 +14,8 @@ body {
 .form-group.form-group--bottom {
   margin-bottom: 0;
 }
+
+.nav>li>a.logout-button {
+  display: none;
+  cursor: pointer;
+}
