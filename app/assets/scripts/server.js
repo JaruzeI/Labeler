@@ -88,32 +88,38 @@ function download(uri, filename, callback){
 };
 
 // Function for filling ejs template with data and converting it to html file
-function ejs2html(path, information) {
-    fs.readFile(path, 'utf8', function (err, data) {
-        if (err) { console.log(err); return false; }
-        var ejs_string = data,
-            template = ejs.compile(ejs_string),
-            html = template(information);
-        fs.writeFile(path + '.html', html, function(err) {
-            if(err) { console.log(err); return false }
-            return true;
-        });  
-    });
-}
+function ejs2html(path, information, req, res) {
+  fs.readFile(path, 'utf8', function (err, data) {
+      if (err) { console.log(err); return false; }
+      var ejs_string = data,
+          template = ejs.compile(ejs_string),
+          html = template(information);
+      fs.writeFile(path + '.html', html, req, res, function(err) {
+          if(err) { console.log(err); return false }
+          createPDF(req, res);
+          return true;
+      });  
+  });
+};
 
 // Function for creating pdf file from html
-function createPDF() {
+function createPDF(req, res) {
   fs.readFile(path.resolve(__dirname + '/views/eti.ejs.html'), 'utf8', function (err, data) {
-    pdf.create(data, options).toFile(path.resolve(saveDir + '/pdf/etykiety.pdf'), function(err, res) {
+    pdf.create(data, options).toFile(path.resolve(saveDir + '/pdf/etykiety.pdf'), function(err, result) {
       if (err) return console.log(err);
-      console.log(res);
+      if (req.body.action == "Preview")
+      {
+        res.sendFile(path.resolve(saveDir + '/pdf/etykiety.pdf'));
+      } else if (req.body.action == "Download") {
+        res.download(path.resolve(saveDir + '/pdf/etykiety.pdf'));
+      }
     });
   });
 }
 //#endregion END OF Declaring functions
  
 app.get('/', function (req, res) {
-  res.sendFile(path.resolve(__dirname + '/../../../index.html'));
+  res.sendFile(path.resolve(__dirname + '/../../index.html'));
 });
 
 app.post('/upload', function(req, res) {
@@ -252,38 +258,31 @@ app.post('/label', function(req, res) {
   
       //#region Operations on EJS template file
       // Creating EJS template file from ejs_template string created earlier
-      fs.writeFile(path.resolve(__dirname + '/views/eti') + '.ejs', ejs_template, function(err) {
-            if(err) { console.log(err); return false }
-            return true;
-        });  
+      fs.writeFile(path.resolve(__dirname + '/views/eti') + '.ejs', ejs_template, req, res, function(err) {
+        if(err) { console.log(err); return false }
+        // Filling EJS template with data and converting it to html file
+        ejs2html(__dirname + "/views/eti.ejs", { 
+          title: title,
+          google_product_category: google_product_category,
+          description: description,
+          zlote: zlote,
+          grosze: grosze,
+          bestseller: bestseller,
+          gtin: gtin,
+          additional: additional
+        }, req, res);
+        return true;
+      });  
   
       console.log(ejs_template);
-  
-      // Filling EJS template with data and converting it to html file
-      ejs2html(__dirname + "/views/eti.ejs", { 
-        title: title,
-        google_product_category: google_product_category,
-        description: description,
-        zlote: zlote,
-        grosze: grosze,
-        bestseller: bestseller,
-        gtin: gtin,
-        additional: additional
-      });
       //#endregion
     });
   
     // Creating pdf file from html
     // It takes around 3 miliseconds to fill entire data to EJS template.
-    setTimeout(createPDF, 1000);
     // Showing preview of the final pdf file in the browser
   
-      if (req.body.action == "Preview")
-      {
-        res.sendFile(path.resolve(saveDir + '/pdf/etykiety.pdf'));
-      } else if (req.body.action == "Download") {
-        res.download(path.resolve(saveDir + '/pdf/etykiety.pdf'));
-      }
+
   }
 });
 
@@ -349,17 +348,14 @@ app.post('/login', function(req, res) {
   /*
   var username = req.body.username;
   var password = req.body.password;
-
   User.findOne({username: username}, function(err, user) {
     if(err) {
       console.log(err);
       return res.status(500).send();
     }
-
     if(!user) {
       return res.status(404).send();
     }
-
     // test a matching password
     user.comparePassword(password, function(err, isMatch) {
       if (isMatch == true) {
