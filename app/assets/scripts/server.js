@@ -13,9 +13,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+//var server = require('http').createServer(app);
+//var io = require('socket.io')(server);
 
+/*
 io.on('connection', function(socket){ 
   io.on('disconnect', function(){
     saveDir = (path.resolve(__dirname + '/../../../uploaded_files'));
@@ -56,6 +57,7 @@ io.on('connection', function(socket){
   });
   
 });
+  */
 
 var User = require('./lib/User.js');
 
@@ -196,7 +198,7 @@ app.post('/label', function(req, res) {
       //#endregion END OF Reading XML and assigning it's values to variables
       if (labelNumber == 1) {
         //#region Creating string for EJS template file based on received XML
-        var ejs_template = '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title>Etykieta</title> <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> <style> body { font-family:"Arial"; font-size:6px; color:black; margin-top:30px; } div { position: absolute; width: 189px; } .marka { text-transform:uppercase; text-align:left; font-size: 13px; height: 15px; font-weight: 192; } .typ { text-transform:uppercase; text-align:left; font-size: 8px; height: 15px; font-weight: 600; } .opis { position: absolute; font-weight:normal; line-height:10px; text-align:left; left: 12px; top: 38px; font-size:7px; width: 189px; } .gr { font-size: 22px; font-weight: 168; } .zl { margin-left:12px; line-height:30px; font-size:36px; font-weight: 168; text-align: right; } .kgo { height: 6px; font-size: 5px; color:black; } .najczesciej { border: 2px solid red; height: 12px; background: black; color: white; display: inline-block; font-weight: 600; } .najczesciej-text { left: 17px; top: 10px; } .ean { height: 8px; } </style> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> </head> <body>';
+        var ejs_template = '<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title>Etykieta</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><style> body { font-family:"Arial"; font-size:6px; color:black; margin-top:30px; } div { position: absolute; width: 189px; } .marka { text-transform:uppercase; text-align:left; font-size: 13px; height: 15px; font-weight: 192; } .typ { text-transform:uppercase; text-align:left; font-size: 8px; height: 15px; font-weight: 600; } .opis { position: absolute; font-weight:normal; line-height:10px; text-align:left; left: 12px; top: 38px; font-size:7px; width: 189px; } .gr { font-size: 22px; font-weight: 168; } .zl { margin-left:12px; line-height:30px; font-size:36px; font-weight: 168; text-align: right; } .kgo { height: 6px; font-size: 5px; color:black; } .najczesciej { border: 2px solid red; height: 12px; background: black; color: white; display: inline-block; font-weight: 600; } .najczesciej-text { left: 17px; top: 10px; } .ean { height: 8px; } </style> </head> <body>';
       
         // Creating variables for left and top allignment for elements in EJS template file
         var left_default = 12, left_gr = 168, left_zl = -34, left_ean = 108, left_indeks = 51, top_marka = 12, top_typ = 25, top_opis = 38, top_gr = 88, top_zl = 84, top_kgo = 98, top_najczesciej = 115, top_ean = 130, top_indeks = 144, top_dodatkowe = 156; 
@@ -345,34 +347,36 @@ app.post('/register', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-  /*
   var username = req.body.username;
   var password = req.body.password;
   User.findOne({username: username}, function(err, user) {
     if(err) {
       console.log(err);
-      return res.status(500).send();
+      return res.send("Sorry! There was an error, try again later.");
     }
     if(!user) {
-      return res.status(404).send();
+      return res.send("There is no user with that username in the database.");
     }
     // test a matching password
     user.comparePassword(password, function(err, isMatch) {
       if (isMatch == true) {
         req.session.user = user;
         saveDir = path.resolve(__dirname + '/../../../user_files/' + user._id);
-        return res.status(200).send();
+        //return res.status(200).send();
+        return res.send("loggedIn");
+        console.log("nic");
       } else {
-        return res.status(401).send();
+        return res.send("Wrong password.");
       }
     });
-  });*/
+  });
 });
 
 app.get('/logout', function(req, res) {
+  console.log("supcio");
   req.session.destroy();
   saveDir = (path.resolve(__dirname + '/../../../uploaded_files'));
-  return res.status(200).send();
+  return res.send("loggedOut");
 });
 
 app.get('/dashboard', function(req, res) {
@@ -383,8 +387,8 @@ app.get('/dashboard', function(req, res) {
   return res.status(200).send("Welcome!");
 });
 
-/*app.listen(3000, function () {
+app.listen(3000, function () {
 	console.log('Serwer nasłuchuje na porcie numer', 3000);
-});*/
+});
 
-server.listen(3000);
+//server.listen(3000);
