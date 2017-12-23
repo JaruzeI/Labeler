@@ -249,7 +249,8 @@ app.post('/preview', function(req, res) {
       // Check if it's preview or user clicked download button
         if (labelNumber == 1){
           // Creating variables for left and top allignment for elements in EJS template file
-          var left_default = pageWidth * 0.0208, left_gr = pageWidth * 0.2917, left_zl = -pageWidth * 0.059, left_gr_old_price = pageWidth * 0.0917, left_zl_old_price = -pageWidth * 0.059, left_old_price_cross = pageWidth * 0.2917, left_ean = pageWidth * 0.1625, left_indeks = pageWidth * 0.0886, top_marka = pageWidth * 0.0208, top_typ = pageWidth * 0.0434, top_opis = pageWidth * 0.066, top_gr = pageWidth * 0.156, top_zl = pageWidth * 0.1498, top_gr_old_price = pageWidth * 0.138, top_zl_old_price = pageWidth * 0.117, top_ean = pageWidth * 0.2000, top_indeks = pageWidth * 0.25, top_dodatkowe = pageWidth * 0.271, top_old_price_cross = pageWidth * 0.135;
+          var left_default, left_gr, left_zl, left_gr_old_price, left_zl_old_price, left_old_price_cross, left_ean, left_indeks;
+          var top_marka = pageWidth * 0.0208, top_typ = pageWidth * 0.0434, top_opis = pageWidth * 0.066, top_gr = pageWidth * 0.156, top_zl = pageWidth * 0.1498, top_gr_old_price = pageWidth * 0.138, top_zl_old_price = pageWidth * 0.117, top_ean = pageWidth * 0.2000, top_indeks = pageWidth * 0.25, top_dodatkowe = pageWidth * 0.271, top_old_price_cross = pageWidth * 0.135;
 
           var width_default = pageWidth * 0.3279;
 
@@ -257,7 +258,7 @@ app.post('/preview', function(req, res) {
               width_gr_old_price = width_default - left_gr_old_price + left_default,
               width_ean = width_default - left_ean + left_default,
               width_indeks = width_default - left_indeks + left_default,
-              cross_width = 0;
+              width_cross = 0;
           //#region Creating string for EJS template file based on received XML
           var ejs_template = '<div id="labels"><script src = "http://cdn.jsdelivr.net/jsbarcode/3.5.8/barcodes/JsBarcode.ean-upc.min.js"></script><style> #label { font-family:"Arial"; font-size: '+pageWidth * 0.0104+'px; -webkit-text-fill-color: black; } #label div { position: absolute; width: '+width_default+'px; } .marka { text-transform:uppercase; text-align:left; font-size: '+pageWidth * 0.0226+'px; height: '+pageWidth * 0.0260+'px; font-weight: 192; } .typ { text-transform:uppercase; text-align:left; font-size: '+pageWidth * 0.0139+'px; height: '+pageWidth * 0.0260+'px; font-weight: 600; } .opis { position: absolute; font-weight:normal; line-height:'+pageWidth * 0.0174+'px; text-align:left; font-size:'+pageWidth * 0.0122+'px; width: '+pageWidth * 0.3279+'px; } #label div .gr { font-size: '+pageWidth * 0.0382+'px; font-weight: 168; width: '+width_gr+'px; } #label .zl { line-height:'+pageWidth * 0.0521+'px; font-size:'+pageWidth * 0.0625+'px; font-weight: 168; text-align: right; } #label div .gr_old_price { font-size: '+pageWidth * 0.0091+'px; font-weight: 168; width: '+width_gr+'px; } .zl_old_price { line-height:'+pageWidth * 0.0521+'px; font-size:'+pageWidth * 0.0150+'px; font-weight: 168; text-align: right; } #label div .ean { height: '+pageWidth * 0.0139+'px; width: '+width_ean+'px; } #label div .indeks { width: '+width_indeks+'px; } </style>'
     
@@ -271,59 +272,54 @@ app.post('/preview', function(req, res) {
                 left_zl = -pageWidth * 0.034;
                 left_gr_old_price = pageWidth * 0.2917;
                 left_zl_old_price = -pageWidth * 0.036;
-                console.log(old_price_length[i]);
                 if (old_price_length[i] > 0) {
                   left_old_price_cross = pageWidth * 0.2917 - (pageWidth * 0.01 * old_price_length[i]);
-                  cross_width = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
+                  width_cross = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
                 } else {
-                  cross_width = 0;
+                  width_cross = 0;
                 }
                 left_ean = pageWidth * 0.1625;
                 left_indeks = pageWidth * 0.0886;
               } else if (i % 3 == 1 || i % 3 == 2) {
-                left_default = left_default + (pageWidth * 0.3333);
-                left_gr = left_gr + (pageWidth * 0.3333);
-                left_zl = left_zl + (pageWidth * 0.3333);
-                left_gr_old_price = left_gr_old_price + (pageWidth * 0.3333);
-                left_zl_old_price = left_zl_old_price + (pageWidth * 0.3333);
-                console.log(old_price_length[i]);
+                left_default += (pageWidth * 0.3333);
+                left_gr += (pageWidth * 0.3333);
+                left_zl += (pageWidth * 0.3333);
+                left_gr_old_price += (pageWidth * 0.3333);
+                left_zl_old_price += (pageWidth * 0.3333);
+                // setting width and left position of cross on top of old price
                 if (old_price_length[i] > 0) {
                   if (i % 3 == 1) {
                     left_old_price_cross = pageWidth * 0.2917 + (pageWidth * 0.3333) - (pageWidth * 0.01 * old_price_length[i]);
-                    cross_width = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
+                    width_cross = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
                   } else {
                     left_old_price_cross = pageWidth * 0.2917 + (pageWidth * 0.6666) - (pageWidth * 0.01 * old_price_length[i]);
-                    cross_width = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
+                    width_cross = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
                   }
                 } else {
-                  cross_width = 0;
+                  width_cross = 0;
                 }
-                left_ean = left_ean + (pageWidth * 0.3333);
-                left_indeks = left_indeks + (pageWidth * 0.3333);
+                left_ean += (pageWidth * 0.3333);
+                left_indeks += left_indeks + (pageWidth * 0.3333);
               }
       
               // Setting values of top attributes for items in preview
               if (i % 3 == 0 && i != 0) {
-                top_marka = top_marka + pageWidth * 0.2915;
-                top_typ = top_typ + pageWidth * 0.2915;
-                top_opis = top_opis + pageWidth * 0.2915;
-                top_gr = top_gr + pageWidth * 0.2915;
-                top_zl = top_zl + pageWidth * 0.2915;
-                top_gr_old_price = top_gr_old_price + pageWidth * 0.2915;
-                top_zl_old_price = top_zl_old_price + pageWidth * 0.2915;
-                top_old_price_cross = top_old_price_cross + pageWidth * 0.2915;
-                top_ean = top_ean + pageWidth * 0.2915;
-                top_indeks = top_indeks + pageWidth * 0.2915;
-                top_dodatkowe = top_dodatkowe + pageWidth * 0.2915;
+                top_marka += pageWidth * 0.2915;
+                top_typ += pageWidth * 0.2915;
+                top_opis += pageWidth * 0.2915;
+                top_gr += pageWidth * 0.2915;
+                top_zl += pageWidth * 0.2915;
+                top_gr_old_price += pageWidth * 0.2915;
+                top_zl_old_price += pageWidth * 0.2915;
+                top_old_price_cross += pageWidth * 0.2915;
+                top_ean += pageWidth * 0.2915;
+                top_indeks += pageWidth * 0.2915;
+                top_dodatkowe += pageWidth * 0.2915;
               } 
     
     
             //Adding item with values from variables to the template
-            ejs_template = (ejs_template + '<div id="label"><div class="item'+item_num+'"> <div class="marka" style="left: '+left_default+'px; top: '+top_marka+'px;"><%= brand['+i+'] %></div> <div class="typ" style="left: '+left_default+'px;top: '+top_typ+'px;"><%= google_product_category['+i+'] %></div> <div class="opis" style="left: '+left_default+'px;top: '+top_opis+'px;"><%= description['+i+'] %></div>'
-            +
-            '<div class="gr_old_price" style=" left: '+left_gr_old_price+'px;top: '+top_gr_old_price+'px; "><%= grosze_old_price['+i+'] %></div><div class="zl_old_price" style="left: '+left_zl_old_price+'px;top: '+top_zl_old_price+'px;"><%= zlote_old_price['+i+'] %></div><svg style="position: absolute; top:'+top_old_price_cross+'px;left: '+left_old_price_cross+';px;" height="'+pageWidth * 0.0150+'" width="'+cross_width+'"><line x1="'+0+'" y1="'+0+'" x2="'+cross_width+'" y2="'+pageWidth * 0.0150+'" style="stroke: black;stroke-width:2" /></svg>'
-            +
-            '<div class="gr" style=" left: '+left_gr+'px;top: '+top_gr+'px; "><%= grosze['+i+'] %></div><div class="zl" style="left: '+left_zl+'px;top: '+top_zl+'px;"><%= zlote['+i+'] %></div> <div class="ean" style="left: '+left_ean+'px; top: '+top_ean+'px; ">');
+            ejs_template = (ejs_template + '<div id="label"><div class="item'+item_num+'"> <div class="marka" style="left: '+left_default+'px; top: '+top_marka+'px;"><%= brand['+i+'] %></div> <div class="typ" style="left: '+left_default+'px;top: '+top_typ+'px;"><%= google_product_category['+i+'] %></div> <div class="opis" style="left: '+left_default+'px;top: '+top_opis+'px;"><%= description['+i+'] %></div><div class="gr_old_price" style=" left: '+left_gr_old_price+'px;top: '+top_gr_old_price+'px; "><%= grosze_old_price['+i+'] %></div><div class="zl_old_price" style="left: '+left_zl_old_price+'px;top: '+top_zl_old_price+'px;"><%= zlote_old_price['+i+'] %></div><svg style="position: absolute; top:'+top_old_price_cross+'px;left: '+left_old_price_cross+';px;" height="'+pageWidth * 0.0150+'" width="'+width_cross+'"><line x1="'+0+'" y1="'+0+'" x2="'+width_cross+'" y2="'+pageWidth * 0.0150+'" style="stroke: black;stroke-width:2" /></svg><div class="gr" style=" left: '+left_gr+'px;top: '+top_gr+'px; "><%= grosze['+i+'] %></div><div class="zl" style="left: '+left_zl+'px;top: '+top_zl+'px;"><%= zlote['+i+'] %></div> <div class="ean" style="left: '+left_ean+'px; top: '+top_ean+'px; ">');
 
             if (gtin[i]) {
               ejs_template = (ejs_template + '<svg id="barcode'+i+'"></svg></div><div class="dodatkowe" style="top: '+top_dodatkowe+'px;left: '+left_default+'px;"><%= title['+i+'] %></div></div><script>JsBarcode("#barcode'+i+'").EAN13("<%= gtin['+i+'] %>", {fontSize: '+pageWidth * 0.012+', textMargin: 0, height: '+pageWidth * 0.0434+'}).render();</script></div>');
@@ -336,7 +332,8 @@ app.post('/preview', function(req, res) {
         if (labelNumber == 2) {
 
           // Creating variables for left and top allignment for elements in EJS template file
-          var left_default = pageWidth * 0.0208, left_gr = pageWidth * 0.2917, left_zl = -pageWidth * 0.059, left_gr_old_price = pageWidth * 0.0917, left_zl_old_price = -pageWidth * 0.059, left_old_price_cross = pageWidth * 0.2917, left_ean = pageWidth * 0.1625, left_indeks = pageWidth * 0.0886, top_marka = pageWidth * 0.0208, top_typ = pageWidth * 0.0434, top_opis = pageWidth * 0.066, top_gr = pageWidth * 0.156, top_zl = pageWidth * 0.1498, top_gr_old_price = pageWidth * 0.138, top_zl_old_price = pageWidth * 0.117, top_ean = pageWidth * 0.2000, top_indeks = pageWidth * 0.25, top_dodatkowe = pageWidth * 0.271, top_old_price_cross = pageWidth * 0.135;
+          var left_default, left_gr, left_zl, left_gr_old_price, left_zl_old_price, left_old_price_cross, left_ean, left_indeks;
+          var top_marka = pageWidth * 0.0208, top_typ = pageWidth * 0.0434, top_opis = pageWidth * 0.066, top_gr = pageWidth * 0.156, top_zl = pageWidth * 0.1498, top_gr_old_price = pageWidth * 0.138, top_zl_old_price = pageWidth * 0.117, top_ean = pageWidth * 0.2000, top_indeks = pageWidth * 0.25, top_dodatkowe = pageWidth * 0.271, top_old_price_cross = pageWidth * 0.135;
 
           var width_default = pageWidth * 0.3279;
 
@@ -344,7 +341,7 @@ app.post('/preview', function(req, res) {
               width_gr_old_price = width_default - left_gr_old_price + left_default,
               width_ean = width_default - left_ean + left_default,
               width_indeks = width_default - left_indeks + left_default,
-              cross_width = 0;
+              width_cross = 0;
           //#region Creating string for EJS template file based on received XML
           var ejs_template = '<div id="labels"><script src = "http://cdn.jsdelivr.net/jsbarcode/3.5.8/barcodes/JsBarcode.ean-upc.min.js"></script><style> #label { font-family:"Arial"; font-size: '+pageWidth * 0.0104+'px; -webkit-text-fill-color: red; } #label div { position: absolute; width: '+width_default+'px; } .marka { text-transform:uppercase; text-align:left; font-size: '+pageWidth * 0.0226+'px; height: '+pageWidth * 0.0260+'px; font-weight: 192; } .typ { text-transform:uppercase; text-align:left; font-size: '+pageWidth * 0.0139+'px; height: '+pageWidth * 0.0260+'px; font-weight: 600; } .opis { position: absolute; font-weight:normal; line-height:'+pageWidth * 0.0174+'px; text-align:left; font-size:'+pageWidth * 0.0122+'px; width: '+pageWidth * 0.3279+'px; } #label div .gr { font-size: '+pageWidth * 0.0382+'px; font-weight: 168; width: '+width_gr+'px; } #label .zl { line-height:'+pageWidth * 0.0521+'px; font-size:'+pageWidth * 0.0625+'px; font-weight: 168; text-align: right; } #label div .gr_old_price { font-size: '+pageWidth * 0.0091+'px; font-weight: 168; width: '+width_gr+'px; } .zl_old_price { line-height:'+pageWidth * 0.0521+'px; font-size:'+pageWidth * 0.0150+'px; font-weight: 168; text-align: right; } #label div .ean { height: '+pageWidth * 0.0139+'px; width: '+width_ean+'px; } #label div .indeks { width: '+width_indeks+'px; } </style>'
     
@@ -358,59 +355,54 @@ app.post('/preview', function(req, res) {
                 left_zl = -pageWidth * 0.034;
                 left_gr_old_price = pageWidth * 0.2917;
                 left_zl_old_price = -pageWidth * 0.036;
-                console.log(old_price_length[i]);
                 if (old_price_length[i] > 0) {
                   left_old_price_cross = pageWidth * 0.2917 - (pageWidth * 0.01 * old_price_length[i]);
-                  cross_width = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
+                  width_cross = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
                 } else {
-                  cross_width = 0;
+                  width_cross = 0;
                 }
                 left_ean = pageWidth * 0.1625;
                 left_indeks = pageWidth * 0.0886;
               } else if (i % 3 == 1 || i % 3 == 2) {
-                left_default = left_default + (pageWidth * 0.3333);
-                left_gr = left_gr + (pageWidth * 0.3333);
-                left_zl = left_zl + (pageWidth * 0.3333);
-                left_gr_old_price = left_gr_old_price + (pageWidth * 0.3333);
-                left_zl_old_price = left_zl_old_price + (pageWidth * 0.3333);
-                console.log(old_price_length[i]);
+                left_default += (pageWidth * 0.3333);
+                left_gr += (pageWidth * 0.3333);
+                left_zl += (pageWidth * 0.3333);
+                left_gr_old_price += (pageWidth * 0.3333);
+                left_zl_old_price += (pageWidth * 0.3333);
+                // setting width and left position of cross on top of old price
                 if (old_price_length[i] > 0) {
                   if (i % 3 == 1) {
                     left_old_price_cross = pageWidth * 0.2917 + (pageWidth * 0.3333) - (pageWidth * 0.01 * old_price_length[i]);
-                    cross_width = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
+                    width_cross = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
                   } else {
                     left_old_price_cross = pageWidth * 0.2917 + (pageWidth * 0.6666) - (pageWidth * 0.01 * old_price_length[i]);
-                    cross_width = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
+                    width_cross = width_default - left_old_price_cross + left_default - (pageWidth * 0.04);
                   }
                 } else {
-                  cross_width = 0;
+                  width_cross = 0;
                 }
-                left_ean = left_ean + (pageWidth * 0.3333);
-                left_indeks = left_indeks + (pageWidth * 0.3333);
+                left_ean += (pageWidth * 0.3333);
+                left_indeks += left_indeks + (pageWidth * 0.3333);
               }
       
               // Setting values of top attributes for items in preview
               if (i % 3 == 0 && i != 0) {
-                top_marka = top_marka + pageWidth * 0.2915;
-                top_typ = top_typ + pageWidth * 0.2915;
-                top_opis = top_opis + pageWidth * 0.2915;
-                top_gr = top_gr + pageWidth * 0.2915;
-                top_zl = top_zl + pageWidth * 0.2915;
-                top_gr_old_price = top_gr_old_price + pageWidth * 0.2915;
-                top_zl_old_price = top_zl_old_price + pageWidth * 0.2915;
-                top_old_price_cross = top_old_price_cross + pageWidth * 0.2915;
-                top_ean = top_ean + pageWidth * 0.2915;
-                top_indeks = top_indeks + pageWidth * 0.2915;
-                top_dodatkowe = top_dodatkowe + pageWidth * 0.2915;
+                top_marka += pageWidth * 0.2915;
+                top_typ += pageWidth * 0.2915;
+                top_opis += pageWidth * 0.2915;
+                top_gr += pageWidth * 0.2915;
+                top_zl += pageWidth * 0.2915;
+                top_gr_old_price += pageWidth * 0.2915;
+                top_zl_old_price += pageWidth * 0.2915;
+                top_old_price_cross += pageWidth * 0.2915;
+                top_ean += pageWidth * 0.2915;
+                top_indeks += pageWidth * 0.2915;
+                top_dodatkowe += pageWidth * 0.2915;
               } 
     
     
             //Adding item with values from variables to the template
-            ejs_template = (ejs_template + '<div id="label"><div class="item'+item_num+'"> <div class="marka" style="left: '+left_default+'px; top: '+top_marka+'px;"><%= brand['+i+'] %></div> <div class="typ" style="left: '+left_default+'px;top: '+top_typ+'px;"><%= google_product_category['+i+'] %></div> <div class="opis" style="left: '+left_default+'px;top: '+top_opis+'px;"><%= description['+i+'] %></div>'
-            +
-            '<div class="gr_old_price" style=" left: '+left_gr_old_price+'px;top: '+top_gr_old_price+'px; "><%= grosze_old_price['+i+'] %></div><div class="zl_old_price" style="left: '+left_zl_old_price+'px;top: '+top_zl_old_price+'px;"><%= zlote_old_price['+i+'] %></div><svg style="position: absolute; top:'+top_old_price_cross+'px;left: '+left_old_price_cross+';px;" height="'+pageWidth * 0.0150+'" width="'+cross_width+'"><line x1="'+0+'" y1="'+0+'" x2="'+cross_width+'" y2="'+pageWidth * 0.0150+'" style="stroke: black;stroke-width:2" /></svg>'
-            +
-            '<div class="gr" style=" left: '+left_gr+'px;top: '+top_gr+'px; "><%= grosze['+i+'] %></div><div class="zl" style="left: '+left_zl+'px;top: '+top_zl+'px;"><%= zlote['+i+'] %></div> <div class="ean" style="left: '+left_ean+'px; top: '+top_ean+'px; ">');
+            ejs_template = (ejs_template + '<div id="label"><div class="item'+item_num+'"> <div class="marka" style="left: '+left_default+'px; top: '+top_marka+'px;"><%= brand['+i+'] %></div> <div class="typ" style="left: '+left_default+'px;top: '+top_typ+'px;"><%= google_product_category['+i+'] %></div> <div class="opis" style="left: '+left_default+'px;top: '+top_opis+'px;"><%= description['+i+'] %></div><div class="gr_old_price" style=" left: '+left_gr_old_price+'px;top: '+top_gr_old_price+'px; "><%= grosze_old_price['+i+'] %></div><div class="zl_old_price" style="left: '+left_zl_old_price+'px;top: '+top_zl_old_price+'px;"><%= zlote_old_price['+i+'] %></div><svg style="position: absolute; top:'+top_old_price_cross+'px;left: '+left_old_price_cross+';px;" height="'+pageWidth * 0.0150+'" width="'+width_cross+'"><line x1="'+0+'" y1="'+0+'" x2="'+width_cross+'" y2="'+pageWidth * 0.0150+'" style="stroke: black;stroke-width:2" /></svg><div class="gr" style=" left: '+left_gr+'px;top: '+top_gr+'px; "><%= grosze['+i+'] %></div><div class="zl" style="left: '+left_zl+'px;top: '+top_zl+'px;"><%= zlote['+i+'] %></div> <div class="ean" style="left: '+left_ean+'px; top: '+top_ean+'px; ">');
 
             if (gtin[i]) {
               ejs_template = (ejs_template + '<svg id="barcode'+i+'"></svg></div><div class="dodatkowe" style="top: '+top_dodatkowe+'px;left: '+left_default+'px;"><%= title['+i+'] %></div></div><script>JsBarcode("#barcode'+i+'").EAN13("<%= gtin['+i+'] %>", {fontSize: '+pageWidth * 0.012+', textMargin: 0, height: '+pageWidth * 0.0434+'}).render();</script></div>');
