@@ -83,6 +83,7 @@ $(document).ready(function(){
       contentType: "application/json",
       success: function(data){
           $("#labelNumber__downloadButton").show();
+          $("#labels").remove();
           $("body").append(data);
       }
     });
@@ -113,7 +114,7 @@ $(document).ready(function(){
         //alert(JSON.stringify(data));
         if (data.user){
           var pdfId = data.user + data.pdfName;
-          var pdfLocation = data.user + "/pdf/" + data.pdfName
+          var pdfLocation = data.user + "/pdf/" + data.pdfName;
         } else {
           var pdfId = data;
           var pdfLocation = data;
